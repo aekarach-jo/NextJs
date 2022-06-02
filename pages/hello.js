@@ -1,26 +1,38 @@
 import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
 
+function Permission({ users }) {
+    return (
+        <Layout>
+            <ul>
+                {users.map((user) => (
+                    <li>{user.username}</li>
+                ))}
+            </ul>
+        </Layout>
+    )
+}
+
 export async function getStaticProps() {
-    const res = await fetch(`http://192.168.1.51:3000/api/admin/getpermission`)
-    const posts = await res.json()
-    console.log(res);
-    return  {
-        props : {
-            
-        }
+    console.log("getStaticProps Hello")
+    const res = await fetch(`https://jsonplaceholder.typicode.com/users`)
+    const users = await res.json()
+    // console.log(users)
+    return {
+        props: {
+            users,
+        },
+        revalidate : 60
     }
 }
 
-// const Hello = (props) => {
-//     const router = useRouter();
-//     const query = router.query;
-//     console.log(query)
-//     return (
-//         <Layout>
-//             <h1>หวักลี {query.name}</h1>
-//         </Layout>
-//     );
-// }
+//  Permission.getInitialProps  = async function (context) {
+//     const res = await fetch(`http://192.168.1.51:3000/api/admin/getpermission`)
+//     const show = await res.json()
+//     console.log(show.data);
+//     return {show}
+//   }
 
-export default getStaticProps;
+
+
+export default Permission;

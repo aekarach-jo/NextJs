@@ -21,9 +21,11 @@ const Blog = (props) => {
    
     return (
         <Layout>
-            <h1>Blogs {query.name}</h1>
-            <button onClick={getPermission}>get User</button>
-
+            <h1 className='text-center'>Blogs {query.name}</h1>
+            <button className="btn btn-info" onClick={getPermission}>get User</button>
+            <ul>
+                <li></li>
+            </ul>
         </Layout>
     );
 }

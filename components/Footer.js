@@ -5,7 +5,9 @@ const style = {
     left : 0,
     padding : '1rem',
     backgroundColor : '#EEEEEE',
-    textAlign : 'center'
+    textAlign : 'center',
+    height : 40,
+
 }
 
 const Footer = () => (
