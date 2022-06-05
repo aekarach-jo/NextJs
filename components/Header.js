@@ -41,22 +41,22 @@ const Header = () => (
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
                             <Link href="/">
-                                <a style={style}>Home</a>
+                                <p style={style}>Home</p>
                             </Link>
                             <Link href="/about">
-                                <a style={style}>About</a>
+                                <p style={style}>About</p>
                             </Link>
                             <Link href="/hello">
-                                <a style={style}>Hello</a>
+                                <p style={style}>Hello</p>
                             </Link>
                             <Link href="/blogs/">
-                                <a style={style}>Blogs</a>
+                                <p style={style}>Blogs</p>
                             </Link>
                         </li>
                     </ul>
                     <form className="d-flex">
                         <Link href="admin/register"><button className="btn btn-outline-secondary m-2" type="button" >Register</button></Link>
-                        <Link href="admin/login"><button className="btn btn-outline-secondary m-2" type="button">Login</button></Link>
+                        <Link href="admin/login"><button className="btn btn-outline-success m-2" type="button">Login</button></Link>
                         <button className="btn btn-outline-danger m-2" type="button" onClick={() => handleLogOut()}>Logout</button>
                     </form>
                 </div>

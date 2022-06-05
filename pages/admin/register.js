@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { adminService } from "../../services";
 
+
 export default function Register() {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -57,8 +58,6 @@ export default function Register() {
                     <button className="btn btn-outline-success"> Register </button>
                 </form>
             </div>
-
-
         </div>
     );
 }

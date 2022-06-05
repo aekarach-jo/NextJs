@@ -3,7 +3,8 @@ import { getCookie, removeCookies, setCookies } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { BehaviorSubject } from 'rxjs';
 
-const baseUrl = `http://192.168.1.51:3000/api`;
+const api_url = process.env.api_url
+
 const adminSubject = new BehaviorSubject(process.browser && getCookie("access-token"));
 
 export const adminService = {   
