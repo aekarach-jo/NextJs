@@ -5,11 +5,16 @@ import { useRouter } from 'next/router';
 import { BehaviorSubject } from 'rxjs';
 import Router from 'next/router';
 
+<<<<<<< HEAD
 import { fetchWrapper } from '../helpers';
 
 const { publicRuntimeConfig } = getConfig();
 // const baseUrl = 'https://192.168.1.51:3000/api';
 const baseUrl = `${publicRuntimeConfig.apiUrl}`;
+=======
+const api_url = process.env.api_url
+
+>>>>>>> 159766ba485aa16e7011df89ab68c308cc2409f6
 const adminSubject = new BehaviorSubject(process.browser && getCookie("access-token"));
 
 export const adminService = {

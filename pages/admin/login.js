@@ -5,7 +5,6 @@ import { adminService } from "../../services";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -35,8 +34,6 @@ export default function Login() {
   };
 
   const handleGetAll = () => {
-
-
     adminService.getAdminAll()
       .then(res => {
         // console.log(res);
@@ -45,9 +42,8 @@ export default function Login() {
   }
 
   return (
-
-
     <div className="card align-center d-block mx-auto" style={mainDivStyle} >
+      <h1 > test h1</h1>
       <form style={formStyle} onSubmit={(e) => handleLogin(e)}>
         <label htmlFor="email"> Email </label>
         <input
@@ -70,9 +66,13 @@ export default function Login() {
         <button className="btn btn-info" type="submit"> Log in </button>
 
       </form>
+<<<<<<< HEAD
       <button className="btn btn-outline-info m-2" type="button" onClick={() => handleGetAll()}>get data</button>
       <Link href="/admin/register"><button className="btn btn-outline-warning m-2" type="button" >Register</button></Link>
 
+=======
+      <button onClick={() => handleGetAll()}>get data</button>
+>>>>>>> 159766ba485aa16e7011df89ab68c308cc2409f6
     </div>
   );
 }

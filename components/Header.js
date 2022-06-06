@@ -56,7 +56,7 @@ const Header = () => (
                     </ul>
                     <form className="d-flex">
                         <Link href="admin/register"><button className="btn btn-outline-secondary m-2" type="button" >Register</button></Link>
-                        <Link href="admin/login"><button className="btn btn-outline-secondary m-2" type="button">Login</button></Link>
+                        <Link href="admin/login"><button className="btn btn-outline-success m-2" type="button">Login</button></Link>
                         <button className="btn btn-outline-danger m-2" type="button" onClick={() => handleLogOut()}>Logout</button>
                     </form>
                 </div>
