@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import Script from 'next/script'
-import '../styles/globals.css'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react';
 import { adminService } from '../services/admin.service';
+
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();

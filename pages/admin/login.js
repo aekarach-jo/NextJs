@@ -10,15 +10,10 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const mainDivStyle = {
-    padding: "1em",
-  };
+  const styles = {
+    color: "#313131"
+  }
 
-  const formStyle = {
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: "560px",
-  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -42,37 +37,45 @@ export default function Login() {
   }
 
   return (
-    <div className="card align-center d-block mx-auto" style={mainDivStyle} >
-      <h1 > test h1</h1>
-      <form style={formStyle} onSubmit={(e) => handleLogin(e)}>
-        <label htmlFor="email"> Email </label>
-        <input
-          className="form-control"
-          type="email"
-          name="email"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <label htmlFor="password"> Password </label>
-        <input
-          className="form-control"
-          type="password"
-          name="password"
-          id="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button className="btn btn-info" type="submit"> Log in </button>
-
-      </form>
-<<<<<<< HEAD
-      <button className="btn btn-outline-info m-2" type="button" onClick={() => handleGetAll()}>get data</button>
-      <Link href="/admin/register"><button className="btn btn-outline-warning m-2" type="button" >Register</button></Link>
-
-=======
-      <button onClick={() => handleGetAll()}>get data</button>
->>>>>>> 159766ba485aa16e7011df89ab68c308cc2409f6
+    <div className="col-md-6 offset-md-3 mt-5">
+      <div className="card col-md-6 offset-md-3 mt-5">
+        <h4 className="card-header">Login</h4>
+        <div className="card-body">
+          <form onSubmit={(e) => handleLogin(e)}>
+            <div className="form-group">
+              <label htmlFor="email"> Email </label>
+              <input
+                className="form-control"
+                type="email"
+                name="email"
+                id="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password"> Password </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="row mt-3">
+              <div className="col-6">
+                <Link href="/admin/register">
+                  <button type="button" className="btn btn-outline-warning d-block mx-auto">Register</button>
+                </Link>
+              </div>
+              <div className="col-6">
+                <button type="submit" className="btn btn-outline-success d-block mx-auto">Login</button>
+              </div>
+            </div>
+          </form>
+          {/* <button className="btn btn-outline-info m-2" type="button" onClick={() => handleGetAll()}>get data</button> */}
+        </div>
+      </div>
     </div>
   );
 }
