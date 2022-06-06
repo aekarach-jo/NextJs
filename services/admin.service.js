@@ -1,84 +1,96 @@
 import axios from 'axios';
 import { getCookie, removeCookies, setCookies } from 'cookies-next';
+import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { BehaviorSubject } from 'rxjs';
+import Router from 'next/router';
 
-const baseUrl = `http://192.168.1.51:3000/api`;
+import { fetchWrapper } from '../helpers';
+
+const { publicRuntimeConfig } = getConfig();
+// const baseUrl = 'https://192.168.1.51:3000/api';
+const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 const adminSubject = new BehaviorSubject(process.browser && getCookie("access-token"));
 
-export const adminService = {   
+export const adminService = {
     admin: adminSubject.asObservable(),
     get adminValue() { return adminSubject.value },
     login,
     signout,
-    register,
-    updateAdmin,
+    create,
+    update,
     getpermission,
     getAdminById,
     getAdminAll,
     resetPassword
 };
 
-async function getAdminAll() {
-    return await axios.get(`${baseUrl}/getall`)
+
+function login(formLogin) {
+    console.log(baseUrl);
+    console.log(formLogin);
+    return fetchWrapper.post(`${baseUrl}/login`, formLogin)
+        .then(res => {
+            console.log(res);
+            console.log(res.data.data.token)
+            adminSubject.next(res)
+            setCookies("access-token", res.data.data.token)
+        })
+}
+
+
+function getAdminAll() {
+    return fetchWrapper.get(`${baseUrl}/getall`)
         .then(res => {
             console.log("Admin data : ", res)
             return res;
         })
 }
 
-async function getAdminById(adminId) {
-    return await axios.get(`${baseUrl}/getAdminById/${adminId}`)
+function getAdminById(adminId) {
+    return fetchWrapper.get(`${baseUrl}/getById/${adminId}`)
 }
 
-async function login(formLogin) {
-    console.log(formLogin);
-    return await axios.post(`${baseUrl}/login`, formLogin)
-        .then(res => {
-            console.log(res);
-            if (res.data.message == "ok") {
-                console.log(res.data.data.token)
-                adminSubject.next(res.data.data.token)
-                setCookies("access-token", res.data.data.token)
-            }
-            return res;
-        })
-}
 
-async function resetPassword(formReset) {
-    return await axios.post(`${baseUrl}/resetPassword`, formReset)
+function resetPassword(formReset) {
+    return fetchWrapper.post(`${baseUrl}/resetPassword`, formReset)
         .then(res => {
             console.log("Reset password", res);
             return res;
         })
 }
 
-async function signout() {
+function signout() {
     removeCookies("access-token");
-
-    location.reload()
+    adminSubject.next(null);
+    // Router.push('/admin/login')
+    // location.reload()
     // return await axios.get(`${baseUrl}/signout`)
     // .then(res => {
     // })
 }
 
-async function register(formRegis) {
-    return await axios.post(`${baseUrl}/create`, formRegis)
+function create(formRegis) {
+    return fetchWrapper.post(`${baseUrl}/create`, formRegis)
         .then(res => {
             console.log("register status : ", res)
         })
 }
 
-async function updateAdmin(formUpdate) {
+function update(id, formUpdate) {
     console.log(formUpdate)
-    return await axios.post(`${baseUrl}/updateAdmin`, formUpdate)
+    return fetchWrapper.post(`${apiUrl}/update`, formUpdate)
         .then(res => {
+            if (id === adminService.value.id) {
+                const admin = { ...adminService.value, ...formUpdate };
+                setCookies('access-token', admin)
+            }
             console.log("update data admin : ", res);
         })
 }
 
-async function getpermission() {
-    return await axios.get(`${baseUrl}/getpermission`)
+function getpermission() {
+    return fetchWrapper.get(`${apiUrl}/getpermission`)
         .then(res => {
             console.log("permission : ", res)
         })
