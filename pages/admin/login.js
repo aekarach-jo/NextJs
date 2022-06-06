@@ -38,10 +38,10 @@ export default function Login() {
 
 
     adminService.getAdminAll()
-    .then(res => {
-      // console.log(res);
-    })
-    
+      .then(res => {
+        // console.log(res);
+      })
+
   }
 
   return (
@@ -70,7 +70,9 @@ export default function Login() {
         <button className="btn btn-info" type="submit"> Log in </button>
 
       </form>
-        <button onClick={() => handleGetAll()}>get data</button>
+      <button className="btn btn-outline-info m-2" type="button" onClick={() => handleGetAll()}>get data</button>
+      <Link href="/admin/register"><button className="btn btn-outline-warning m-2" type="button" >Register</button></Link>
+
     </div>
   );
 }
