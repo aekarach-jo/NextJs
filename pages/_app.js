@@ -2,7 +2,10 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react';
-import { adminService } from '../services/admin.service';
+import { adminService } from 'services';
+import ReactDOM from "react-dom";
+import {io} from 'socket.io-client';
+
 
 import '../styles/globals.css'
 
@@ -11,18 +14,22 @@ function MyApp({ Component, pageProps }) {
   const [admin, setAdmin] = useState(null);
   const [authorized, setAuthorized] = useState(false);
 
+  
   useEffect(() => {
-      // ตอนเปิดเข้ามาครั้งแรก จะมาเช็ค auth ก่อน
-      authCheck(router.asPath);
-      const hideContent = () => setAuthorized(false);
-      router.events.on('routeChangeStart', hideContent);
-      router.events.on('routeChangeComplete', authCheck)
-      return () => {
-          router.events.off('routeChangeStart', hideContent);
-          router.events.off('routeChangeComplete', authCheck);
-      }
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    const socket = io("http://192.168.1.51:5000",{transports:['websocket']});
+    socket.on('connect',data => {
+        socket.emit('test','start')
+        console.log('connected');
+    });
+    // ตอนเปิดเข้ามาครั้งแรก จะมาเช็ค auth ก่อน
+    authCheck(router.asPath);
+    const hideContent = () => setAuthorized(false);
+    router.events.on('routeChangeStart', hideContent);
+    router.events.on('routeChangeComplete', authCheck)
+    return () => {
+      router.events.off('routeChangeStart', hideContent);
+      router.events.off('routeChangeComplete', authCheck);
+    }
   }, []);
 
 
@@ -39,7 +46,7 @@ function MyApp({ Component, pageProps }) {
         query: { returnUrl: router.asPath }
       });
     } else {
-      setAuthorized(true);
+      setAuthorized(true)
     }
   }
 
@@ -50,22 +57,25 @@ function MyApp({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     //  bootstrap CDN
         <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
           crossorigin="anonymous"
         />
       </Head>
 
       <Script
+      
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous" />
+        crossorigin="anonymous"
+        
+        />
 
-      <div className={`app-container ${admin ? 'bg-light' : ''}`}>
-        {authorized &&
-          <Component {...pageProps} />
-        }
-      </div>
+      {authorized &&
+        <Component {...pageProps} />
+      }
+
     </>
   )
 }

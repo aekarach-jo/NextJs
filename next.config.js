@@ -10,8 +10,8 @@ module.exports = {
   },
   publicRuntimeConfig: {
       apiUrl: process.env.NODE_ENV === 'development'
-          ? 'https://192.168.1.51:3000/api' // development api
-          : 'https://192.168.1.51:3000/api' // production api
+          ? 'http://192.168.1.51:3000/api' // development api
+          : 'http://192.168.1.51:3000/api' // production api
   }
 }
 

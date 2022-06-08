@@ -1,18 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { removeCookies, setCookies } from "cookies-next";
-import { adminService } from "../../services";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { adminService } from "services";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const styles = {
-    color: "#313131"
-  }
 
 
   const handleLogin = (e) => {
@@ -20,11 +17,8 @@ export default function Login() {
     const credentials = { email, password };
     console.log(credentials);
 
-    adminService.login(credentials).then(res => {
-      console.log(res);
-      if (res.data.message == "ok") {
-        router.push("/")
-      }
+    return adminService.login(credentials).then((res) => {
+      location.href = '/'
     })
   };
 
@@ -49,6 +43,7 @@ export default function Login() {
                 type="email"
                 name="email"
                 id="email"
+                // value="admin@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -59,6 +54,7 @@ export default function Login() {
                 type="password"
                 name="password"
                 id="password"
+                // value="admin"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>

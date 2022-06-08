@@ -10,10 +10,12 @@ import { fetchWrapper } from '../helpers';
 // const baseUrl = 'https://192.168.1.51:3000/api';
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}`;
-const adminSubject = new BehaviorSubject(process.browser && getCookie("access-token"));
+const adminSubject = new BehaviorSubject(process.browser && getCookie("access_token"));
+const adminRefresh = new BehaviorSubject(process.browser && getCookie("refresh_token"));
 
 export const adminService = {
     admin: adminSubject.asObservable(),
+    get adminRefresh_token() { return adminRefresh.value},
     get adminValue() { return adminSubject.value },
     login,
     signout,
@@ -26,24 +28,24 @@ export const adminService = {
 };
 
 
-function login(formLogin) {
-    console.log(baseUrl);
-    console.log(formLogin);
-    return fetchWrapper.post(`${baseUrl}/login`, formLogin)
+async function login(formLogin) {
+    return await axios.post(`${baseUrl}/login`, formLogin)
         .then(res => {
-            console.log(res);
-            console.log(res.data.data.token)
-            adminSubject.next(res)
-            setCookies("access-token", res.data.data.token)
+            // console.log(res);
+            // adminSubject.next(res)
+            setCookies("access_token", res.data.data.access_token)
+            setCookies("refresh_token", res.data.data.refresh_token)
             return res;
-        })
+        }).catch((error) => {
+            // console.log(error)
+          })
 }
 
 
 function getAdminAll() {
     return fetchWrapper.get(`${baseUrl}/getall`)
         .then(res => {
-            console.log("Admin data : ", res)
+            // console.log("Admin data : ", res)
             return res;
         })
 }
@@ -56,16 +58,17 @@ function getAdminById(adminId) {
 function resetPassword(formReset) {
     return fetchWrapper.post(`${baseUrl}/resetPassword`, formReset)
         .then(res => {
-            console.log("Reset password", res);
+            // console.log("Reset password", res);
             return res;
         })
 }
 
 function signout() {
-    removeCookies("access-token");
+    removeCookies("access_token");
+    removeCookies("refresh_token");
     adminSubject.next(null);
     // Router.push('/admin/login')
-    // location.reload()
+    location.reload()
     // return await axios.get(`${baseUrl}/signout`)
     // .then(res => {
     // })
@@ -84,7 +87,7 @@ function update(id, formUpdate) {
         .then(res => {
             if (id === adminService.value.id) {
                 const admin = { ...adminService.value, ...formUpdate };
-                setCookies('access-token', admin)
+                setCookies('access_token', admin)
             }
             console.log("update data admin : ", res);
         })

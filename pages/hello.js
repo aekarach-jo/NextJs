@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
-import Layout from '../components/Layout'
+import Layout from '../components/Layout/Layout'
 
 function Permission({ users }) {
+    // console.log(users);
     return (
         <Layout>
             <ul>
@@ -17,7 +18,6 @@ export async function getStaticProps() {
     console.log("getStaticProps Hello")
     const res = await fetch(`https://jsonplaceholder.typicode.com/users`)
     const users = await res.json()
-    // console.log(users)
     return {
         props: {
             users,

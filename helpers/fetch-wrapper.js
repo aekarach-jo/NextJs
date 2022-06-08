@@ -1,5 +1,6 @@
+import axios from "axios";
 import getConfig from "next/config";
-import { adminService } from "../services/admin.service";
+import { adminService } from "services";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -10,6 +11,7 @@ export const fetchWrapper = {
     delete: _delete
 };
 function get(url) {
+    console.log(url)
     const requestOptions = {
         method: 'GET',
         headers: authHeader(url)
@@ -20,10 +22,11 @@ function get(url) {
 function post(url, body) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url) },
+        headers: { 'Content-Type': 'application/json', ...authHeader(url), },
         credentials: 'include',
         body: JSON.stringify(body)
     };
+    console.log(requestOptions);
     return fetch(url, requestOptions).then(handleResponse);
 }
 
@@ -33,7 +36,7 @@ function put(url, body) {
         headers: { 'Content-Type': 'application/json', ...authHeader(url), },
         body: JSON.stringify(body)
     };
-    return fetch(url, requestOptions).then(handleResponse);    
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function _delete(url) {
@@ -46,11 +49,13 @@ function _delete(url) {
 
 
 function authHeader(url) {
-    const admin = adminService.adminValue;
-    const isLoggedIn = admin && admin.token;
-    const isAuthUrl = url.startsWith(publicRuntimeConfig.apiUrl);
-    if (isLoggedIn && isAuthUrl) {
-        return { Authorization: `Bearer ${admin.token}` };
+    const refresh = adminService.adminRefresh_token;
+    const token = adminService.adminValue;
+    const isLoggedIn = token;
+
+    const isApiUrl = url.startsWith(publicRuntimeConfig.apiUrl); // url.startsWith =>  return boolean
+    if (isLoggedIn && isApiUrl) {
+        return { Authorization: `Bearer ${token}`, RefreshToken: `Bearer ${refresh}` };
     } else {
         return {};
     }
@@ -60,11 +65,11 @@ function authHeader(url) {
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        
         if (!response.ok) {
-            if ([401, 403].includes(response.status) && adminService.userValue) {
+            if ([401, 403].includes(response.status) && adminService.adminValue) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                userService.logout();
+                // console.log(response.status);
+                adminService.signout();
             }
 
             const error = (data && data.message) || response.statusText;

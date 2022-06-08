@@ -1,8 +1,8 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
+import { adminService } from "services";
 import Swal from "sweetalert2";
-import { adminService } from "../../services";
 
 
 export default function Register() {
@@ -25,7 +25,6 @@ export default function Register() {
             denyButtonText: `ยกเลิก`,
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log('ok');
                 adminService.create(credentials)
             } else if (result.isDenied) { }
         })
@@ -73,11 +72,11 @@ export default function Register() {
                         <div className="row">
                             <div className="col-6">
                                 <Link href="/admin/login">
-                                    <button className="offset-md-1 mt-3 btn btn-outline-danger"> back to login </button>
+                                    <button className="offset-md-1 mt-3 btn btn-outline-secondary"> back </button>
                                 </Link>
                             </div>
                             <div className="col-6">
-                                <button className="offset-md-6 mt-3 btn btn-outline-success"> Register </button>
+                                <button className="offset-md-3 mt-3 btn btn-outline-success"> Register </button>
                             </div>
                         </div>
                     </form>
