@@ -4,16 +4,8 @@ import React, { useState } from "react";
 import { Table } from "reactstrap";
 
 
-
-
-
-// const getAdminById = (id) => {
-//     const [adminId, setIdAdmin] = useState("");
-//     console.log(id);
-//     return adminService.getAdminById(id).then(res => { console.log(res); })
-//   }
 async function showAdmin() {
-  var [adminData, setAdminData] = useState(null);
+  var adminData = null;
   const ad = await adminService.getAdminAll().then(res => {
     adminData = res.data.user
     return adminData
@@ -35,11 +27,11 @@ async function showAdmin() {
         hover
         responsive
       >
-        {/* <ul>
+        <ul>
           {ad.map((user) => (
             <li>{user.email}</li>
           ))}
-        </ul> */}
+        </ul>
 
       </Table>
     </Layout>

@@ -29,8 +29,6 @@ const handleLogOut = async () => {
 };
 
 
-
-
 const Header = () => (
     <div>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">

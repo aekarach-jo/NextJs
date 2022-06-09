@@ -4,8 +4,8 @@ import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { BehaviorSubject } from 'rxjs';
 import Router from 'next/router';
+import { fetchWrapper } from './fetch-wrapper';
 
-import { fetchWrapper } from '../helpers';
 
 // const baseUrl = 'https://192.168.1.51:3000/api';
 const { publicRuntimeConfig } = getConfig();
@@ -37,15 +37,16 @@ async function login(formLogin) {
             setCookies("refresh_token", res.data.data.refresh_token)
             return res;
         }).catch((error) => {
-            // console.log(error)
+            console.log(error)
           })
 }
+
 
 
 function getAdminAll() {
     return fetchWrapper.get(`${baseUrl}/getall`)
         .then(res => {
-            // console.log("Admin data : ", res)
+            console.log("Admin data : ", res)
             return res;
         })
 }

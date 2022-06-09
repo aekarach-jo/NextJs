@@ -9,7 +9,7 @@ const style = {
     padding : '1rem',
     backgroundColor : '#EEEEEE',
     textAlign : 'center',
-    height : 80,
+    height : 40,
 
 }
 

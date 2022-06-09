@@ -1,33 +1,69 @@
-import { useRouter } from 'next/router'
-import Layout from '../../components/Layout/Layout';
-import axios from 'axios';
+import axios from "axios"; 
+import getConfig from "next/config"; 
+import { Fragment } from "react";
+import { adminService } from "services";
+import Layout from "components/Layout/Layout";
+import Link from "next/link";
+
+const { publicRuntimeConfig } = getConfig();
+const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 
 
-const Blog = (props) => {
-    const router = useRouter();
-    const query = router.query;
-    console.log(query)
-    const getPermission = (e) => {
-        e.preventDefault()
-        axios.get(`http://192.168.1.51:3000/api/admin/getpermission`)
-            .then(res => {
-                console.log(res.data.data.permission);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
-   
+const Index = (props) => {
+  const posts = props.data;
+  console.log(posts.user);
+  if(!posts.user || posts.user.length == 0) {
     return (
-        <Layout>
-            <h1 className='text-center'>Blogs {query.name}</h1>
-            <button className="btn btn-info" onClick={getPermission}>get User</button>
-            <ul>
-                <li></li>
-            </ul>
-        </Layout>
-    );
-}
+      <h1>Error</h1>
+    )
+  }
+  return (
+    <Fragment>
+          <Layout>
+          <h1>Home</h1>
+          <ol>
+            {posts.user.map((post) => (
+              <li key={post.id}>
+                <Link href={{
+                        pathname: "blogs/[id]",
+                        query: { id: post.id },
+                      }}>    
+                      <a>{post.email}</a>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </Layout> 
+    </Fragment>
+  );
+};
 
-export default Blog
+export const getStaticProps = async () => {
+  const response = await axios({
+      url:  `${baseUrl}/getall`,
+      method: 'GET',
+      headers: {
+        Authorization : `Bearer ${adminService.adminValue}`
+      }
+   
+  })
+  return {
+    props: { data: response.data.data }
+  };
+  // console.log(baseUrl);
+  // console.log('ok');
+  // const data = await adminService.getAdminAll();
+  // return {
+  //   props: { data : data.data},
+  // };
+
+  // console.log(data);
+  // console.log('ok');
+  // const res = await Axios.get("https://jsonplaceholder.typicode.com/posts");
+  // console.log(res)
+  // return {
+  //   props: { data: res.data.slice(0, 10) },
+  // };
+};
+
+export default Index;
