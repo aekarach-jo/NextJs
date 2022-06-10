@@ -9,7 +9,7 @@ const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 
 
-const Index = (props) => {
+const showAdmin = (props) => {
   const posts = props.data;
   console.log(posts.user);
   if(!posts.user || posts.user.length == 0) {
@@ -39,31 +39,12 @@ const Index = (props) => {
 };
 
 export const getStaticProps = async () => {
-  const response = await axios({
-      url:  `${baseUrl}/getall`,
-      method: 'GET',
-      headers: {
-        Authorization : `Bearer ${adminService.adminValue}`
-      }
-   
-  })
+  const ad = await adminService.getAdminAll()
+  // console.log(ad.data)
+  console.log("-------------Get All--------------");
   return {
-    props: { data: response.data.data }
+    props: { data: ad.data }
   };
-  // console.log(baseUrl);
-  // console.log('ok');
-  // const data = await adminService.getAdminAll();
-  // return {
-  //   props: { data : data.data},
-  // };
-
-  // console.log(data);
-  // console.log('ok');
-  // const res = await Axios.get("https://jsonplaceholder.typicode.com/posts");
-  // console.log(res)
-  // return {
-  //   props: { data: res.data.slice(0, 10) },
-  // };
 };
 
-export default Index;
+export default showAdmin;

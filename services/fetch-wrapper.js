@@ -1,8 +1,10 @@
-import axios, { Axios } from "axios";
+import { getCookie } from 'cookies-next';
 import getConfig from "next/config";
 import { adminService } from "services";
 
 const { publicRuntimeConfig } = getConfig();
+
+
 
 export const fetchWrapper = {
     get,
@@ -10,12 +12,13 @@ export const fetchWrapper = {
     put,
     delete: _delete
 };
- function get(url) {
+function get(url) {
     console.log(url)
     const requestOptions = {
         method: 'GET',
         headers: authHeader(url)
     };
+    console.log(requestOptions);
     return fetch(url, requestOptions).then(handleResponse);
 }
 
@@ -50,10 +53,12 @@ function _delete(url) {
 
 function authHeader(url) {
     const refresh = adminService.adminRefresh_token;
-    const token = adminService.adminValue;
+    const token = getCookie('access_token')
+    console.log("tokensssss  ", token);
     const isLoggedIn = token;
-
     const isApiUrl = url.startsWith(publicRuntimeConfig.apiUrl); // url.startsWith =>  return boolean
+    console.log("isApiUrl   ", isApiUrl);
+    console.log("isLoggedIn   ", isLoggedIn);
     if (isLoggedIn && isApiUrl) {
         return { Authorization: `Bearer ${token}`, RefreshToken: `Bearer ${refresh}` };
     } else {

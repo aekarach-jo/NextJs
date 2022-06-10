@@ -46,13 +46,19 @@ async function login(formLogin) {
 function getAdminAll() {
     return fetchWrapper.get(`${baseUrl}/getall`)
         .then(res => {
-            console.log("Admin data : ", res)
+            // console.log("Admin data : ", res)
             return res;
         })
 }
 
 function getAdminById(adminId) {
+    // console.log("adminSubject",adminSubject.value);
+    // console.log("admin-token-value",adminService.adminValue);
     return fetchWrapper.get(`${baseUrl}/getById/${adminId}`)
+    .then(res => {
+        console.log("===fetch get id==",res);
+        return res;
+    })
 }
 
 

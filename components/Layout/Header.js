@@ -41,16 +41,16 @@ const Header = () => (
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
                             <Link href="/">
-                                <p style={style}>Home</p>
+                                <a style={style}>Home</a>
                             </Link>
                             <Link href="/about">
-                                <p style={style}>About</p>
+                                <a style={style}>About</a>
                             </Link>
                             <Link href="/hello">
-                                <p style={style}>Hello</p>
+                                <a style={style}>Hello</a>
                             </Link>
                             <Link href="/blogs/">
-                                <p style={style}>Blogs</p>
+                                <a style={style}>Blogs</a>
                             </Link>
                         </li>
                     </ul>

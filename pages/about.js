@@ -3,32 +3,20 @@ import Layout from "../components/Layout/Layout"
 import React, { useState } from "react";
 import { Table } from "reactstrap";
 
+const showAdmin = (props) => {
 
-async function showAdmin() {
-  var adminData = null;
-  const ad = await adminService.getAdminAll().then(res => {
-    adminData = res.data.user
-    return adminData
-  })
-  console.log(ad);
+  console.log(props.data.user);
+  const adminObj = props.data.user;
   return (
     <Layout>
       <h1>About</h1>
-      {/* <button onClick={() => getAll()} className="btn btn-info mb-3">Get admin data</button> <br />
-      <input
-        type="text"
-        name="adminId"
-        id="adminId"
-        onChange={(e) => setIdAdmin(e.target.value)}
-      />
-      <button onClick={() => getAdminById(adminId)} className="btn btn-warning m-2">Get admin by Id</button> */}
 
       <Table
         hover
         responsive
       >
         <ul>
-          {ad.map((user) => (
+          {adminObj.map((user) => (
             <li>{user.email}</li>
           ))}
         </ul>
@@ -37,4 +25,14 @@ async function showAdmin() {
     </Layout>
   )
 }
+
+export const getStaticProps = async () => {
+  const ad = await adminService.getAdminAll()
+  // console.log(ad.data)
+
+  return {
+    props: { data: ad.data }
+  };
+};
+
 export default showAdmin;
