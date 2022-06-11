@@ -8,12 +8,14 @@ import {io} from 'socket.io-client';
 
 
 import '../styles/globals.css'
+import { getCookie } from 'cookies-next';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const [admin, setAdmin] = useState(null);
   const [authorized, setAuthorized] = useState(false);
 
+  // console.log(getCookie('access_token'));
   
   useEffect(() => {
     const socket = io("http://192.168.1.51:5000",{transports:['websocket']});

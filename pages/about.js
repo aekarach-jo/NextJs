@@ -1,6 +1,6 @@
 import { adminService } from "services";
 import Layout from "../components/Layout/Layout"
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "reactstrap";
 
 const showAdmin = (props) => {

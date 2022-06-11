@@ -4,16 +4,22 @@ import { adminService } from "services";
 
 const { publicRuntimeConfig } = getConfig();
 
+const access_token = getCookie("access_token");
+const refresh_token = getCookie("refresh_token");
 
+// console.log(access_token);
+// console.log(refresh_token);
 
 export const fetchWrapper = {
     get,
     post,
+    post_regis,
     put,
     delete: _delete
 };
 function get(url) {
     console.log(url)
+
     const requestOptions = {
         method: 'GET',
         headers: authHeader(url)
@@ -31,6 +37,16 @@ function post(url, body) {
     };
     console.log(requestOptions);
     return fetch(url, requestOptions).then(handleResponse);
+}
+async function post_regis(url, body) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // credentials: 'include',
+        body: JSON.stringify(body)
+    };
+    console.log(requestOptions);
+    return await fetch(url, requestOptions)
 }
 
 function put(url, body) {
@@ -52,15 +68,16 @@ function _delete(url) {
 
 
 function authHeader(url) {
-    const refresh = adminService.adminRefresh_token;
-    const token = getCookie('access_token')
-    console.log("tokensssss  ", token);
-    const isLoggedIn = token;
+    // console.log(access_token);
+    // console.log(refresh_token);
+    const isLoggedIn = !adminService.adminValue;
     const isApiUrl = url.startsWith(publicRuntimeConfig.apiUrl); // url.startsWith =>  return boolean
-    console.log("isApiUrl   ", isApiUrl);
-    console.log("isLoggedIn   ", isLoggedIn);
+    // console.log("isApiUrl   ", isApiUrl);
+    // console.log("isLoggedIn   ", isLoggedIn);
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: `Bearer ${token}`, RefreshToken: `Bearer ${refresh}` };
+        // console.log('header',access_token);
+        // console.log('api :',publicRuntimeConfig.apiUrl);
+        return { Authorization: `Bearer ${access_token}`, RefreshToken: `Bearer ${refresh_token}` };
     } else {
         return {};
     }

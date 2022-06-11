@@ -13,6 +13,10 @@ const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 const adminSubject = new BehaviorSubject(process.browser && getCookie("access_token"));
 const adminRefresh = new BehaviorSubject(process.browser && getCookie("refresh_token"));
 
+// const adminSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('access_token')));
+// const adminRefresh = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('refresh_token')));
+
+
 export const adminService = {
     admin: adminSubject.asObservable(),
     get adminRefresh_token() { return adminRefresh.value},
@@ -32,7 +36,10 @@ async function login(formLogin) {
     return await axios.post(`${baseUrl}/login`, formLogin)
         .then(res => {
             // console.log(res);
-            // adminSubject.next(res)
+            adminSubject.next(res)
+            // localStorage.setItem('access_token', JSON.stringify(res));
+            // localStorage.setItem('refresh_token', JSON.stringify(res));
+
             setCookies("access_token", res.data.data.access_token)
             setCookies("refresh_token", res.data.data.refresh_token)
             return res;
@@ -82,7 +89,7 @@ function signout() {
 }
 
 function create(formRegis) {
-    return fetchWrapper.post(`${baseUrl}/create`, formRegis)
+    return fetchWrapper.post_regis(`${baseUrl}/create`, formRegis)
         .then(res => {
             console.log("register status : ", res)
         })

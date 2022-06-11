@@ -1,12 +1,7 @@
-import axios from "axios"; 
-import getConfig from "next/config"; 
 import { Fragment } from "react";
 import { adminService } from "services";
 import Layout from "components/Layout/Layout";
 import Link from "next/link";
-
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 
 
 const showAdmin = (props) => {
