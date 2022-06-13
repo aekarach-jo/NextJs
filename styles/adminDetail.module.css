@@ -1,0 +1,31 @@
+.btnEdit {
+    border-radius: 10px;
+    background-color: rgb(226, 181, 0);
+    color: aliceblue;
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.btnEdit:hover {
+    transition-duration: .5s;
+    border-radius: 40px;
+    background-color: rgb(158, 139, 64);
+    color: aliceblue;
+    font-size: 15px;
+}
+
+.btnDel {
+    border-radius: 10px;
+    background-color: rgb(216, 13, 13);
+    color: aliceblue;
+    font-size: 15px;
+}
+
+.btnDel:hover {
+    transition-duration: .5s;
+    border-radius: 40px;
+    border-radius: 10px;
+    background-color: rgb(140, 63, 63);
+    color: aliceblue;
+    font-size: 15px;
+}

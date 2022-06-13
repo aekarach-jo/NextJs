@@ -9,6 +9,7 @@ import {io} from 'socket.io-client';
 
 import '../styles/globals.css'
 import { getCookie } from 'cookies-next';
+import Layout from 'components/Layout/Layout';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -18,11 +19,11 @@ function MyApp({ Component, pageProps }) {
   // console.log(getCookie('access_token'));
   
   useEffect(() => {
-    const socket = io("http://192.168.1.51:5000",{transports:['websocket']});
-    socket.on('connect',data => {
-        socket.emit('test','start')
-        console.log('connected');
-    });
+    // const socket = io("http://192.168.1.51:5000",{transports:['websocket']});
+    // socket.on('connect',data => {
+    //     socket.emit('test','start')
+    //     console.log('connected');
+    // });
     // ตอนเปิดเข้ามาครั้งแรก จะมาเช็ค auth ก่อน
     authCheck(router.asPath);
     const hideContent = () => setAuthorized(false);
@@ -41,6 +42,8 @@ function MyApp({ Component, pageProps }) {
     setAdmin(adminService.adminValue);
     const publicPaths = ['/admin/login', '/admin/register'];
     const path = url.split('?')[0];
+    console.log(!adminService.adminValue);
+    console.log(!publicPaths.includes(path));
     if (!adminService.adminValue && !publicPaths.includes(path)) {
       setAuthorized(false);
       router.push({
@@ -75,7 +78,9 @@ function MyApp({ Component, pageProps }) {
         />
 
       {authorized &&
-        <Component {...pageProps} />
+
+          <Component {...pageProps} />
+
       }
 
     </>

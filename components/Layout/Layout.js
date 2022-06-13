@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { adminService } from "services";
 import Footer from "./Footer";
 import Header from "./Header";
+import Sidebar from "./Sidebar";
 // import Sidebar from "./Layout/Sidebar";
 
 
@@ -19,10 +20,10 @@ function Layout(props) {
 
     return (
         <div>
-            {/* <Sidebar /> */}
             <Header />
+            {/* <Sidebar /> */}
             {props.children}
-            <Footer />
+            {/* <Footer /> */}
         </div>)
 }
 

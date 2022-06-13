@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import Swal from 'sweetalert2'
 import { adminService } from "../../services";
+import Style from "../../styles/Layout/header.module.css"
+
 const style = {
     // backgroundColor: '#4CAF50',
     border: 'none',
@@ -29,9 +32,10 @@ const handleLogOut = async () => {
 };
 
 
-const Header = () => (
-    <div>
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+export default function Header() {
+    return (
+        <Fragment>
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4" >
             <div className="container-fluid">
                 <a className="navbar-brand" >Simddee</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,16 +45,16 @@ const Header = () => (
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
                             <Link href="/">
-                                <a style={style}>Home</a>
+                                <p style={style}>Home</p>
                             </Link>
-                            <Link href="/about">
+                            {/* <Link href="/about">
                                 <a style={style}>About</a>
                             </Link>
                             <Link href="/hello">
                                 <a style={style}>Hello</a>
-                            </Link>
+                            </Link> */}
                             <Link href="/blogs/">
-                                <a style={style}>Blogs</a>
+                                <p style={style}>Blogs</p>
                             </Link>
                         </li>
                     </ul>
@@ -62,9 +66,6 @@ const Header = () => (
                 </div>
             </div>
         </nav>
-
-
-    </div>
-)
-
-export default Header
+    </Fragment>
+    )
+}

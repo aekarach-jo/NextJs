@@ -13,9 +13,6 @@ const baseUrl = `${publicRuntimeConfig.apiUrl}`;
 const adminSubject = new BehaviorSubject(process.browser && getCookie("access_token"));
 const adminRefresh = new BehaviorSubject(process.browser && getCookie("refresh_token"));
 
-// const adminSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('access_token')));
-// const adminRefresh = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('refresh_token')));
-
 
 export const adminService = {
     admin: adminSubject.asObservable(),
@@ -36,12 +33,13 @@ async function login(formLogin) {
     return await axios.post(`${baseUrl}/login`, formLogin)
         .then(res => {
             // console.log(res);
-            adminSubject.next(res)
-            // localStorage.setItem('access_token', JSON.stringify(res));
-            // localStorage.setItem('refresh_token', JSON.stringify(res));
+            adminSubject.next(res)    
 
             setCookies("access_token", res.data.data.access_token)
             setCookies("refresh_token", res.data.data.refresh_token)
+
+            // localStorage.setItem("access_token", res.data.data.access_token )
+            // localStorage.setItem("refresh_token", res.data.data.refresh_token )
             return res;
         }).catch((error) => {
             console.log(error)
@@ -58,12 +56,9 @@ function getAdminAll() {
         })
 }
 
-function getAdminById(adminId) {
-    // console.log("adminSubject",adminSubject.value);
-    // console.log("admin-token-value",adminService.adminValue);
-    return fetchWrapper.get(`${baseUrl}/getById/${adminId}`)
+function getAdminById(adminId,token) {
+    return fetchWrapper.get(`${baseUrl}/getById/${adminId}`,token)
     .then(res => {
-        console.log("===fetch get id==",res);
         return res;
     })
 }
