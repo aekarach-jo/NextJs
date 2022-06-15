@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Fragment } from "react";
 import Swal from 'sweetalert2'
 import { adminService } from "../../services";
-import Style from "../../styles/Layout/header.module.css"
 
 const style = {
     // backgroundColor: '#4CAF50',
@@ -34,8 +33,8 @@ const handleLogOut = async () => {
 
 export default function Header() {
     return (
-        <Fragment>
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4" >
+        <>
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark rounded-bottom" >
             <div className="container-fluid">
                 <a className="navbar-brand" >Simddee</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,6 +65,6 @@ export default function Header() {
                 </div>
             </div>
         </nav>
-    </Fragment>
+    </>
     )
 }

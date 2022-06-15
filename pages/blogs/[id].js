@@ -1,33 +1,58 @@
-import axios from "axios";
 import Layout from "components/Layout/Layout";
-import { getCookie } from "cookies-next";
-import getConfig from "next/config";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { adminService } from "services";
-const { publicRuntimeConfig } = getConfig();
-const baseUrl = `${publicRuntimeConfig.apiUrl}`;
+import Swal from "sweetalert2";
 
-const Post = ({ adminData }) => {
+
+
+const onUpdate = ({ adminData }) => {
   const admin = adminData.user
-  console.log(admin)
-  const router = useRouter();
+  // console.log(admin)
+  
+  
+  const [id,setId] = useState(admin.id)
+  const [firstname,setFirstname] = useState(admin.firstname)
+  const [lastname,setLastname] = useState(admin.lastname)
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
+  const credentials = {id, firstname, lastname}
+
+  const onUpdate = async (e) => {
+    e.preventDefault();
+    console.log(credentials);
+    await Swal.fire({
+      title: 'ยืนยันการแก้ไข?', firstname,
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'ยืนยัน',
+      denyButtonText: `ยกเลิก`,
+  }).then((result) => {
+      if (result.isConfirmed) {
+          adminService.update(credentials, admin.access_token).then(res => {
+            Swal.fire({
+              position : 'center',
+              title: 'สำเร็จ',
+              icon: 'success',
+              showCloseButton: false,
+              timer : 700
+            })
+          })
+      } else if (result.isDenied) { }
+  })
   }
 
   return (
     <Layout>
-      <h1>Post page</h1>
-      <div className="container w-25" >
-        <form>
+      <div className="container w-50 mt-5" >
+        <h1>แก้ไขรายละเอียด</h1>
+        <form onSubmit={(e) => onUpdate(e)}>
           <label htmlFor="firstname">Firstname</label>
           <input
             className="form-control"
             type="text"
             name="firstname"
             id="firstname"
-            value={admin.firstname}
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
           />
           <label htmlFor="lastname"> Lastname </label>
           <input
@@ -35,7 +60,8 @@ const Post = ({ adminData }) => {
             type="text"
             name="lastname"
             id="lastname"
-            value={admin.lastname}
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
           />
           <label htmlFor="email">Email</label>
           <input
@@ -44,20 +70,14 @@ const Post = ({ adminData }) => {
             name="email"
             id="email"
             value={admin.email}
-          />
-          <label htmlFor="password"> Password </label>
-          <input
-            className="form-control"
-            type="password"
-            name="password"
-            id="password"
+            readOnly
           />
           <div className="row mt-3">
             <div className="col">
               <button type="button" className="btn btn-secondary d-block mx-auto" data-bs-dismiss="modal">ยกเลิก</button>
             </div>
             <div className="col">
-              <button type="button" className="btn btn-primary d-block mx-auto" onClick={() => onSubmitEdit()}>บันทึก</button>
+              <button type="submit" className="btn btn-primary d-block mx-auto" >บันทึก</button>
             </div>
           </div>
         </form>
@@ -66,7 +86,8 @@ const Post = ({ adminData }) => {
   );
 };
 
-export default Post;
+export default onUpdate;
+
 
 export async function getServerSideProps(context) {
   const cookie = context.req.headers.cookie
@@ -74,9 +95,9 @@ export async function getServerSideProps(context) {
   const t = cookie.split(";", 1)
   const token = t[0].split("access_token=")
   console.log(token[1]);
-  const adminData = await adminService.getAdminById(param,token[1])
+  const adminData = await adminService.getAdminById(param, token[1])
   // const adminData = await adminById.json()
-  console.log(adminData);
+  // console.log(adminData);
   return {
     props: { adminData: adminData.data, }
   }

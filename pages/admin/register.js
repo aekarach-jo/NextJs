@@ -1,24 +1,25 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { adminService, alertService } from "services";
 import Swal from "sweetalert2";
 
 
 export default function Register() {
-    // const [firstname, setFirstname] = useState("");
-    // const [lastname, setLastname] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [email, setEmail] = useState("");
-    // const credentials = { firstname, lastname, email, password };
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const credentials = { firstname, lastname, email, password };
+
 
     const handleRegister = async (e) => {
-        let data = {
-            firstname: document.querySelector('#firstname').value,
-            lastname: document.querySelector('#lastname').value,
-            password: document.querySelector('#password').value,
-            email: document.querySelector('#email').value,
-        }
-        console.log(data);
+        // const data = {
+        //     firstname: document.querySelector('#firstname').value,
+        //     lastname: document.querySelector('#lastname').value,
+        //     password: document.querySelector('#password').value,
+        //     email: document.querySelector('#email').value,
+        // }
+        // console.log(data);
         e.preventDefault();
         await Swal.fire({
             title: 'ยืนยันการสมัคร?',
@@ -28,8 +29,7 @@ export default function Register() {
             denyButtonText: `ยกเลิก`,
         }).then((result) => {
             if (result.isConfirmed) {
-                adminService.create(data).then(res => {
-                    // alertService.error
+                adminService.create(credentials).then(res => {
                 })
             } else if (result.isDenied) { }
         })
@@ -48,7 +48,7 @@ export default function Register() {
                             type="text"
                             name="firstname"
                             id="firstname"
-                        // onChange={(e) => setFirstname(e.target.value)}
+                        onChange={(e) => setFirstname(e.target.value)}
                         />
                         <label htmlFor="lastname"> Lastname </label>
                         <input
@@ -56,7 +56,7 @@ export default function Register() {
                             type="text"
                             name="lastname"
                             id="lastname"
-                        // onChange={(e) => setLastname(e.target.value)}
+                        onChange={(e) => setLastname(e.target.value)}
                         />
                         <label htmlFor="email">Email</label>
                         <input
@@ -64,7 +64,7 @@ export default function Register() {
                             type="email"
                             name="email"
                             id="email"
-                        // onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         />
                         <label htmlFor="password"> Password </label>
                         <input
@@ -72,7 +72,7 @@ export default function Register() {
                             type="password"
                             name="password"
                             id="password"
-                        // onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         />
                         <div className="row">
                             <div className="col-6">

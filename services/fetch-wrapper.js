@@ -1,4 +1,3 @@
-import { getCookie } from 'cookies-next';
 import getConfig from "next/config";
 import { adminService } from "services";
 
@@ -17,15 +16,16 @@ function get(url, token) {
         method: 'GET',
         headers: authHeader(url, token)
     };
-    console.log(requestOptions);
+    // console.log(requestOptions);
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function post(url, body) {
+function post(url, body, token) {
+    console.log(token);
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url), },
-        credentials: 'include',
+        headers:{ 'Content-Type': 'application/json', ...authHeader(url,token) },
+        // credentials: 'include',
         body: JSON.stringify(body)
     };
     console.log(requestOptions);
@@ -62,15 +62,14 @@ function _delete(url) {
 
 
 function authHeader(url, token) {
-    const access_token = getCookie("access_token");
-    const refresh_token = getCookie("refresh_token");
-    const isLoggedIn = !adminService.adminValue;
+    const isLoggedIn = !adminService.adminValue; //ตอนนี้ value ที่ได้เป็น false ถึงแม้จะมี token แล้ว หาวิธีแก้ ตอนรับมาที่ Service
     const isApiUrl = url.startsWith(publicRuntimeConfig.apiUrl); // url.startsWith =>  return boolean
-    console.log(isLoggedIn);
-    console.log(isApiUrl);
-    if (isLoggedIn && isApiUrl) {
-        console.log('aaaaa',token);
-        return { Authorization: `Bearer ${token}`, RefreshToken: `Bearer ${refresh_token}` };
+    console.log("isLogin",isLoggedIn);
+    console.log("isApi",isApiUrl);
+    // if (isLoggedIn && isApiUrl) {
+    if (isApiUrl) {
+        console.log('Token',token);
+        return { Authorization: `Bearer ${token}` };
     } else {
         return {};
     }

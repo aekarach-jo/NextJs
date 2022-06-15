@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { adminService } from "services";
-import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 // import Sidebar from "./Layout/Sidebar";
@@ -23,7 +22,6 @@ function Layout(props) {
             <Header />
             {/* <Sidebar /> */}
             {props.children}
-            {/* <Footer /> */}
         </div>)
 }
 

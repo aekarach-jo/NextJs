@@ -3,13 +3,9 @@ import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react';
 import { adminService } from 'services';
-import ReactDOM from "react-dom";
-import {io} from 'socket.io-client';
-
-
 import '../styles/globals.css'
-import { getCookie } from 'cookies-next';
-import Layout from 'components/Layout/Layout';
+import 'tailwindcss/tailwind.css'
+import 'bootstrap/dist/css/bootstrap.css'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -17,8 +13,8 @@ function MyApp({ Component, pageProps }) {
   const [authorized, setAuthorized] = useState(false);
 
   // console.log(getCookie('access_token'));
-  
   useEffect(() => {
+    
     // const socket = io("http://192.168.1.51:5000",{transports:['websocket']});
     // socket.on('connect',data => {
     //     socket.emit('test','start')
@@ -27,12 +23,14 @@ function MyApp({ Component, pageProps }) {
     // ตอนเปิดเข้ามาครั้งแรก จะมาเช็ค auth ก่อน
     authCheck(router.asPath);
     const hideContent = () => setAuthorized(false);
-    router.events.on('routeChangeStart', hideContent);
+    // console.log(router.asPath); // path ปัจจุบัน
+    router.events.on('routeChangeStart', hideContent); //ถ้ามี event การ route เกิดขึ้น 
     router.events.on('routeChangeComplete', authCheck)
     return () => {
       router.events.off('routeChangeStart', hideContent);
       router.events.off('routeChangeComplete', authCheck);
     }
+
   }, []);
 
 
@@ -42,8 +40,9 @@ function MyApp({ Component, pageProps }) {
     setAdmin(adminService.adminValue);
     const publicPaths = ['/admin/login', '/admin/register'];
     const path = url.split('?')[0];
-    console.log(!adminService.adminValue);
-    console.log(!publicPaths.includes(path));
+    // console.log(!adminService.adminValu);
+    // console.log( !publicPaths.includes(path));
+
     if (!adminService.adminValue && !publicPaths.includes(path)) {
       setAuthorized(false);
       router.push({
@@ -60,27 +59,13 @@ function MyApp({ Component, pageProps }) {
       <Head>
     // Responsive meta tag
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-    //  bootstrap CDN
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-          crossorigin="anonymous"
-        />
+ 
       </Head>
 
-      <Script
-      
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"
-        
-        />
+      <Script />
 
       {authorized &&
-
-          <Component {...pageProps} />
-
+           <Component {...pageProps} />
       }
 
     </>
