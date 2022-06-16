@@ -22,20 +22,13 @@ export default function Login() {
     })
   };
 
-  const handleGetAll = () => {
-    adminService.getAdminAll()
-      .then(res => {
-        // console.log(res);
-      })
-
-  }
 
   return (
     <div className="col-md-6 offset-md-3 mt-5">
       <div className="card col-md-6 offset-md-3 mt-5">
         <h4 className="card-header">Login</h4>
         <div className="card-body">
-          <form onSubmit={(e) => handleLogin(e)}>
+          <form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="email"> Email </label>
               <input

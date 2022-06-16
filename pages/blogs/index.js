@@ -1,16 +1,14 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { adminService } from "services";
 import Layout from "components/Layout/Layout";
-import Link from "next/link";
-import Styles from "../../styles/adminDetail.module.css";
-import { Modal } from "reactstrap";
 import AdminTable from "components/AdminComponent/table/AdminTable";
+import Progress from "components/AdminComponent/progress/Progress";
 
 const ShowAdminData = (props) => {
   const posts = props.data;
-
   return (
     <Fragment>
+        <Progress />
       <Layout>
         <AdminTable adminObj={posts}/>
       </Layout>

@@ -8,12 +8,9 @@ import getConfig from "next/config";
 
 export async function middleware(req = NextRequest, res = NextResponse) {
 
-    // console.log(req.headers);
     const cookie = req.cookies
     const access_token = cookie.access_token
     const refresh_token = cookie.refresh_token
-    // console.log(access_token)
-
     if (access_token && refresh_token) {
         const checkExpire = await fetch(`${process.env.api_url}/checkTokenExpire/${access_token}`)
         const check = await checkExpire.json()

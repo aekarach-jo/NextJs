@@ -1,46 +1,46 @@
 import Layout from "components/Layout/Layout";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { adminService } from "services";
 import Swal from "sweetalert2";
 
 
-
 const onUpdate = ({ adminData }) => {
   const admin = adminData.user
-  // console.log(admin)
-  
-  
-  const [id,setId] = useState(admin.id)
-  const [firstname,setFirstname] = useState(admin.firstname)
-  const [lastname,setLastname] = useState(admin.lastname)
+  console.log(admin)
 
-  const credentials = {id, firstname, lastname}
 
+  const [id, setId] = useState(admin.id)
+  const [firstname, setFirstname] = useState(admin.firstname)
+  const [lastname, setLastname] = useState(admin.lastname)
+
+  const formUpdate = { id, firstname, lastname }
+  console.log(formUpdate);
   const onUpdate = async (e) => {
     e.preventDefault();
-    console.log(credentials);
+    console.log(formUpdate);
     await Swal.fire({
       title: 'ยืนยันการแก้ไข?', firstname,
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: 'ยืนยัน',
       denyButtonText: `ยกเลิก`,
-  }).then((result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-          adminService.update(credentials, admin.access_token).then(res => {
-            Swal.fire({
-              position : 'center',
-              title: 'สำเร็จ',
-              icon: 'success',
-              showCloseButton: false,
-              timer : 700
-            })
+        adminService.update(formUpdate, admin.access_token).then(res => {
+          Swal.fire({
+            position: 'center',
+            title: 'สำเร็จ',
+            icon: 'success',
+            showCloseButton: false,
+            timer: 700
           })
+        })
       } else if (result.isDenied) { }
-  })
+    })
   }
 
   return (
+    <Fragment>
     <Layout>
       <div className="container w-50 mt-5" >
         <h1>แก้ไขรายละเอียด</h1>
@@ -83,6 +83,7 @@ const onUpdate = ({ adminData }) => {
         </form>
       </div>
     </Layout>
+    </Fragment>
   );
 };
 
@@ -91,15 +92,20 @@ export default onUpdate;
 
 export async function getServerSideProps(context) {
   const cookie = context.req.headers.cookie
+  console.log(cookie)
   const param = context.params.id
   const t = cookie.split(";", 1)
   const token = t[0].split("access_token=")
   console.log(token[1]);
-  const adminData = await adminService.getAdminById(param, token[1])
+  const adminData = await fetch('http://192.168.1.51:3000/api/getapi/4', {
+    method : "GET",
+    headers : { Authorization : `Bearer ${token[1]}`}
+  })
+  // const adminData = await adminService.getAdminById(param, token[1])
   // const adminData = await adminById.json()
   // console.log(adminData);
   return {
-    props: { adminData: adminData.data, }
+    props: { adminData: adminData.data, },
   }
 }
 
@@ -122,21 +128,4 @@ export async function getServerSideProps(context) {
 //     fallback: true
 //   };
 // };
-
-
-// export async function getServerSideProps(context) {
-//   // console.log("------------------------",context.req.headers.cookie);
-//   const cookie = context.req.headers.cookie
-//   const param = context.params.id
-//   const t = cookie.split(";", 1)
-//   const token = t[0].split("access_token=")
-//   const adminById = await fetch(`${baseUrl}/getById/${param}`, {
-//     method: 'GET',
-//     headers: { Authorization: `Bearer ${token[1]}` },
-//   })
-//   const adminData = await adminById.json()
-//   return {
-//     props: { adminData: adminData.data, }
-//   }
-// }
 

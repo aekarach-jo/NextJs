@@ -12,9 +12,8 @@ function MyApp({ Component, pageProps }) {
   const [admin, setAdmin] = useState(null);
   const [authorized, setAuthorized] = useState(false);
 
-  // console.log(getCookie('access_token'));
   useEffect(() => {
-    
+
     // const socket = io("http://192.168.1.51:5000",{transports:['websocket']});
     // socket.on('connect',data => {
     //     socket.emit('test','start')
@@ -23,26 +22,19 @@ function MyApp({ Component, pageProps }) {
     // ตอนเปิดเข้ามาครั้งแรก จะมาเช็ค auth ก่อน
     authCheck(router.asPath);
     const hideContent = () => setAuthorized(false);
-    // console.log(router.asPath); // path ปัจจุบัน
     router.events.on('routeChangeStart', hideContent); //ถ้ามี event การ route เกิดขึ้น 
     router.events.on('routeChangeComplete', authCheck)
     return () => {
       router.events.off('routeChangeStart', hideContent);
       router.events.off('routeChangeComplete', authCheck);
     }
-
   }, []);
-
-
 
   function authCheck(url) {
     // ถ้าไม่มี access-token จะ redirect ไปที่หน้า login
     setAdmin(adminService.adminValue);
     const publicPaths = ['/admin/login', '/admin/register'];
     const path = url.split('?')[0];
-    // console.log(!adminService.adminValu);
-    // console.log( !publicPaths.includes(path));
-
     if (!adminService.adminValue && !publicPaths.includes(path)) {
       setAuthorized(false);
       router.push({
@@ -53,19 +45,15 @@ function MyApp({ Component, pageProps }) {
       setAuthorized(true)
     }
   }
-
   return (
     <>
       <Head>
     // Responsive meta tag
         <meta name="viewport" content="width=device-width, initial-scale=1" />
- 
       </Head>
-
       <Script />
-
       {authorized &&
-           <Component {...pageProps} />
+        <Component {...pageProps} />
       }
 
     </>

@@ -1,8 +1,7 @@
 {
-  "/_middleware": "pages/_middleware.js",
-  "/_document": "pages/_document.js",
+  "/_middleware": "static/webpack/pages/_middleware.62ab953eaad0aaea.hot-update.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/blogs/[id]": "pages/blogs/[id].js",
+  "/_document": "pages/_document.js",
   "/blogs": "pages/blogs.js"
 }

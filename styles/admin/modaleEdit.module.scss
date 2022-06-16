@@ -13,10 +13,11 @@
     height: 100vh;
     animation: fadein .3s;
     background-color: rgba(200, 200, 200, 0.5);
-    position: fixed;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 0;
 
     .modalContainer {
         width: 500px;
@@ -30,8 +31,12 @@
 
         .title {
             display: inline-block;
-            text-align: center;
-            margin-top: 10px;
+            text-align: start;
+            margin-top: 0px;
+
+            h1 {
+                font-size: 22px;
+            }
         }
 
         .body {
@@ -40,7 +45,12 @@
             justify-content: center;
             align-items: center;
             font-size: 1.7rem;
-            text-align: center;
+
+            text-align: left;
+
+            .txt_label {
+                font-size: 20px;
+            }
         }
 
         .footer {
@@ -49,16 +59,37 @@
             justify-content: center;
             align-items: center;
 
-            Button {
-                width: 150px;
+            .cancelBtn {
+                @apply m-1 px-4 py-2 font-semibold text-sm bg-yellow-500 text-white rounded-md shadow-sm hover:scale-105 ease-in-out duration-300 ;
+                width: 7rem;
                 height: 45px;
-                margin: 10px;
+                margin: 20px;
+                margin-top: 50px;
+                border: none;
+                background-color: crimson;
+                color: white;
+                border-radius: 8px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            .confirmBtn {
+                @apply m-1 px-4 py-2 font-semibold text-sm bg-yellow-500 text-white rounded-md shadow-sm hover:scale-105 ease-in-out duration-300 ;
+                width: 7rem;
+
+                height: 45px;
+                margin: 20px;
+                margin-top: 50px;
                 border: none;
                 background-color: cornflowerblue;
                 color: white;
                 border-radius: 8px;
                 font-size: 20px;
                 cursor: pointer;
+            }
+
+            #cancelBtn {
+                background-color: crimson;
             }
         }
     }
@@ -75,9 +106,7 @@
         cursor: pointer;
     }
 
-    #cancelBtn {
-        background-color: crimson;
-    }
+
 
 
 }

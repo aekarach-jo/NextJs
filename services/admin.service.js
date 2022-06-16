@@ -14,7 +14,7 @@ const adminRefresh = new BehaviorSubject(process.browser && getCookie("refresh_t
 
 export const adminService = {
     admin: adminSubject.asObservable(),
-    get adminRefresh_token() { return adminRefresh.value},
+    get adminRefresh_token() { return adminRefresh.value },
     get adminValue() { return adminSubject.value },
     login,
     signout,
@@ -26,41 +26,32 @@ export const adminService = {
     resetPassword
 };
 
-// console.log(adminService.adminValue);
-// console.log(adminService.adminRefresh_token);
-
 async function login(formLogin) {
     return await axios.post(`${baseUrl}/login`, formLogin)
         .then(res => {
-            adminSubject.next(res)    
+            adminSubject.next(res)
             setCookies("access_token", res.data.data.access_token)
             setCookies("refresh_token", res.data.data.refresh_token)
-            // localStorage.setItem("access_token", res.data.data.access_token )
-            // localStorage.setItem("refresh_token", res.data.data.refresh_token )
             return res;
         }).catch((error) => {
             console.log(error)
-          })
+        })
 }
-
-
 
 function getAdminAll() {
     return fetchWrapper.get(`${baseUrl}/getall`)
         .then(res => {
-            // console.log("Admin data : ", res)
-            adminSubject.next(res)  
+            adminSubject.next(res)
             return res;
         })
 }
 
-function getAdminById(adminId,token) {
-    return fetchWrapper.get(`${baseUrl}/getById/${adminId}`,token)
-    .then(res => {
-        return res;
-    })
+function getAdminById(adminId, token) {
+    return fetchWrapper.get(`${baseUrl}/getById/${adminId}`, token)
+        .then(res => {
+            return res;
+        })
 }
-
 
 function resetPassword(formReset) {
     return fetchWrapper.post(`${baseUrl}/resetPassword`, formReset)
